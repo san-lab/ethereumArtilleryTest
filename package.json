@@ -1,0 +1,16 @@
+{
+  "name": "artillery_eth_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "transactionSigner.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "ethers": "^5.0.19"
+  }
+}
