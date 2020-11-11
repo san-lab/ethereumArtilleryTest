@@ -96,6 +96,11 @@ function createContractRawTx(requestParams, context, ee, next) {
 }
 
 function logBody(requestParams, response, context, ee, next) {
-  console.log(response.body);
+  if(process.env.DEBUG === "true") {
+    console.log(response.body);
+  }
+  else if(response.body.error) {
+    console.log(response.body);
+  }
   return next();
 }
