@@ -18,8 +18,8 @@ class NonceManager {
   }
 }
 
-const provider = new ethers.providers.JsonRpcProvider(process.env.PRIV_KEY);
-const wallet = new ethers.Wallet(process.env.NODE_ENDPOINT, provider);
+const provider = new ethers.providers.JsonRpcProvider(process.env.NODE_ENDPOINT);
+const wallet = new ethers.Wallet(process.env.PRIV_KEY, provider);
 let baseNonce = undefined;
 const nonceManager = new NonceManager();
 
