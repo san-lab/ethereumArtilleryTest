@@ -15,3 +15,12 @@ scenarios:
             method: "eth_sendRawTransaction"
             params: ["{{ rawTx }}"]
             id: 73
+      - post:
+          url: "/localhost:8546"
+          beforeRequest: "createRawTx"
+          afterResponse: "logBody"
+          json:
+            jsonrpc: "2.0"
+            method: "eth_sendRawTransaction"
+            params: ["{{ rawTx }}"]
+            id: 73
