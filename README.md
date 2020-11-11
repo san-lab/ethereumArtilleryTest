@@ -32,4 +32,8 @@ artillery run --output report.json ethereumTest.yml
 artillery report --output report.html report.json
 ```
 
+If you have installed artillery in local execute instead:
 
+```
+./node_modules/artillery/bin/artillery run ethereumTest.yml
+```
