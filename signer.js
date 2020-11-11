@@ -1,10 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const { ethers } = require("ethers");
+const { ABI } = require("./dummyABIandBytecode")
 
 module.exports = {
-  createRawTx: createRawTx,
-  logBody: logBody,
-  getNonce: getNonce,
+  createRawTx,
+  createContractRawTx,
+  logBody,
+  getNonce,
 }
 
 class NonceManager {
@@ -22,6 +24,7 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.NODE_ENDPOINT)
 const wallet = new ethers.Wallet(process.env.PRIV_KEY, provider);
 let baseNonce = undefined;
 const nonceManager = new NonceManager();
+const contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, ABI, wallet);
 
 async function getNonce() {
   const nonce = await wallet.getTransactionCount();
@@ -43,6 +46,19 @@ async function getRawTransactionSigned(txNonce) {
   return rawTx;
 }
 
+async function getRawTransactionSignedFromContract(txNonce) {
+
+  const tx = {
+    gasPrice: "0x3B9ACA00",
+    gasLimit: "0x4630C0",
+    nonce: txNonce
+  }
+  const txContract = await contract.populateTransaction.add(); // Change this method for your method
+  Object.assign(tx, txContract);
+  const rawTx = await wallet.signTransaction(tx);
+  return rawTx;
+}
+
 function createRawTx(requestParams, context, ee, next) {
   if (baseNonce == undefined) {
     getNonce().then(currNonce => {
@@ -55,6 +71,24 @@ function createRawTx(requestParams, context, ee, next) {
   }
   else {
     getRawTransactionSigned(baseNonce + nonceManager.getIncreaseNonce()).then(rawTx => {
+      context.vars['rawTx'] = rawTx;
+      return next();
+    });
+  }
+}
+
+function createContractRawTx(requestParams, context, ee, next) {
+  if (baseNonce == undefined) {
+    getNonce().then(currNonce => {
+      baseNonce = currNonce;
+      getRawTransactionSignedFromContract(baseNonce + nonceManager.getIncreaseNonce()).then(rawTx => {
+        context.vars['rawTx'] = rawTx;
+        return next();
+      });
+    });
+  }
+  else {
+    getRawTransactionSignedFromContract(baseNonce + nonceManager.getIncreaseNonce()).then(rawTx => {
       context.vars['rawTx'] = rawTx;
       return next();
     });

@@ -1,0 +1,17 @@
+config:
+  target: "http:/"
+  phases:
+    - duration: 3
+      arrivalRate: 3
+  processor: "./signer.js"
+scenarios:
+    - flow:
+      - post:
+          url: "/localhost:8545"
+          beforeRequest: "createContractRawTx"
+          afterResponse: "logBody"
+          json:
+            jsonrpc: "2.0"
+            method: "eth_sendRawTransaction"
+            params: ["{{ rawTx }}"]
+            id: 73
