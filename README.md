@@ -14,6 +14,7 @@ Execute:
 
 ```
 npm install
+npm install -g artillery
 ```
 
 ## Launch
