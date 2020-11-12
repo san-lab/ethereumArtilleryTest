@@ -2,6 +2,11 @@ require('dotenv').config();
 const { ethers } = require("ethers");
 const { ABI } = require("./dummyABIandBytecode")
 
+const GAS_PRICE = "0x3B9ACA00";
+const GAS_LIMIT = "0x4630C0";
+const DESTINATION_ACCOUNT = "0x8ba1f109551bD432803012645Ac136ddd64DBA72";
+const ETHERS_SENT = "0.00001";
+
 module.exports = {
   createRawTx,
   createContractRawTx,
@@ -35,10 +40,10 @@ async function getNonce() {
 async function getRawTransactionSigned(txNonce) {
 
   const tx = {
-    to: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
-    value: ethers.utils.parseEther("0.00001"),
-    gasPrice: "0x3B9ACA00",
-    gasLimit: "0x4630C0",
+    to: DESTINATION_ACCOUNT,
+    value: ethers.utils.parseEther(ETHERS_SENT),
+    gasPrice: GAS_PRICE,
+    gasLimit: GAS_LIMIT,
     nonce: txNonce
   }
 
@@ -49,8 +54,8 @@ async function getRawTransactionSigned(txNonce) {
 async function getRawTransactionSignedFromContract(txNonce) {
 
   const tx = {
-    gasPrice: "0x3B9ACA00",
-    gasLimit: "0x4630C0",
+    gasPrice: GAS_PRICE,
+    gasLimit: GAS_LIMIT,
     nonce: txNonce
   }
   const txContract = await contract.populateTransaction.add(); // Change this method for your method
