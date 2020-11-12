@@ -38,15 +38,18 @@ If you have installed artillery in local execute instead:
 ./node_modules/artillery/bin/artillery run ethereumTestBasic.yml
 ```
 
-## Smart contracts
+Before executing Smart Contract test do the steps 3 and 4 described in the "Smart Contracts" section
+
+## Smart Contracts
 
 To change the Smart Contract to test with the "ethereumTestSmartContract.yml" do the following:
 
 1. Compile your Smart Contract using an external tool like "Remix"
 2. Paste in this project root folder the ABI and Bytecode following the format of "dummyABIandBytecode.js"
 3. Deploy the smart contract (you can use the tool "utils/contractDeployerUtility", just change the import to your ABI and Bytecode)
-4. In the file "signer.js" change the import to your ABI
-5. Execute the artillery test
+4. Paste the contract address in the ".env" file
+5. In the file "signer.js" change the import to your ABI
+6. Execute the artillery test
 
 ## Multiple nodes
 
