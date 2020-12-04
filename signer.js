@@ -1,9 +1,12 @@
 require('dotenv').config();
 const { ethers } = require('ethers');
-const { ABI } = require('./dummyABIandBytecode');
+//const { ABI } = require('./dummyABIandBytecode');
+//const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS
+const { ABI } = require('./heavyDummyABIandBytecode');
+const CONTRACT_ADDRESS = process.env.HEAVY_CONTRACT_ADDRESS
 
 const GAS_PRICE = '0x3B9ACA00';
-const GAS_LIMIT = '0x4630C0';
+const GAS_LIMIT = '0xA7D8C0';
 const DESTINATION_ACCOUNT = '0x8ba1f109551bD432803012645Ac136ddd64DBA72';
 const ETHERS_SENT = '0.00001';
 
@@ -23,7 +26,7 @@ const provider = new ethers.providers.JsonRpcProvider(process.env.NODE_ENDPOINT)
 const wallet = new ethers.Wallet(process.env.PRIV_KEY, provider);
 let baseNonce;
 const nonceManager = new NonceManager();
-const contract = new ethers.Contract(process.env.CONTRACT_ADDRESS, ABI, wallet);
+const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, wallet);
 
 async function getNonce() {
   const nonce = await wallet.getTransactionCount();
@@ -49,7 +52,7 @@ async function getRawTransactionSignedFromContract(txNonce) {
     gasLimit: GAS_LIMIT,
     nonce: txNonce,
   };
-  const txContract = await contract.populateTransaction.add(); // Change this method for your method
+  const txContract = await contract.populateTransaction.doWork(); // Change this method for your method
   Object.assign(tx, txContract);
   const rawTx = await wallet.signTransaction(tx);
   return rawTx;

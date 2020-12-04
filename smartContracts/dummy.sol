@@ -2,13 +2,9 @@ pragma solidity ^0.5.0;
 
 contract dummy {
 
-    uint256 public counter;
-
-    constructor() public {
-        counter = 0;
-    }
+    uint256 private counter;
         
-    function add() public {
+    function doWork() public {
         counter += 1;
     }
 }

@@ -1,13 +1,13 @@
 config:
-  target: "https:/"
+  target: "http:/"
   phases:
-    - duration: 1
-      arrivalRate: 1
+    - duration: 4
+      arrivalRate: 4
   processor: "./signer.js"
 scenarios:
     - flow:
       - post:
-          url: "/rinkeby.infura.io/v3/e744cbc3502b48508063c77ab5a8389f"
+          url: "/localhost:8545"
           beforeRequest: "createRawTx"
           afterResponse: "logBody"
           json:
@@ -19,7 +19,7 @@ scenarios:
             json: $.result
             as: txHash
       - post:
-          url: "/rinkeby.infura.io/v3/e744cbc3502b48508063c77ab5a8389f"
+          url: "/localhost:8545"
           beforeRequest: "waitForTx"
           afterResponse: "logBodyForReceipt"
           json:

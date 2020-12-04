@@ -1,8 +1,8 @@
 config:
   target: "http:/"
   phases:
-    - duration: 3
-      arrivalRate: 3
+    - duration: 1
+      arrivalRate: 1
   processor: "./signer.js"
 scenarios:
     - flow:
