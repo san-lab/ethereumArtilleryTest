@@ -1,13 +1,13 @@
 config:
-  target: "http:/"
+  target: "https:/"
   phases:
-    - duration: 3
-      arrivalRate: 3
+    - duration: 2
+      arrivalRate: 2
   processor: "./signer.js"
 scenarios:
     - flow:
       - post:
-          url: "/localhost:8545"
+          url: "/rinkeby.infura.io/v3/e744cbc3502b48508063c77ab5a8389f"
           beforeRequest: "createRawTx"
           afterResponse: "logBody"
           json:

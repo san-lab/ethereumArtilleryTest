@@ -1,0 +1,32 @@
+config:
+  target: "https:/"
+  phases:
+    - duration: 1
+      arrivalRate: 1
+  processor: "./signer.js"
+scenarios:
+    - flow:
+      - post:
+          url: "/rinkeby.infura.io/v3/e744cbc3502b48508063c77ab5a8389f"
+          beforeRequest: "createRawTx"
+          afterResponse: "logBody"
+          json:
+            jsonrpc: "2.0"
+            method: "eth_sendRawTransaction"
+            params: ["{{ rawTx }}"]
+            id: 73
+          capture:
+            json: $.result
+            as: txHash
+      - post:
+          url: "/rinkeby.infura.io/v3/e744cbc3502b48508063c77ab5a8389f"
+          beforeRequest: "waitForTx"
+          afterResponse: "logBodyForReceipt"
+          json:
+            jsonrpc: "2.0"
+            method: "eth_getTransactionReceipt"
+            params: ["{{ txHash }}"]
+            id: 74
+
+
+

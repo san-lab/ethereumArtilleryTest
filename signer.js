@@ -92,12 +92,33 @@ function createContractRawTx(requestParams, context, ee, next) {
 }
 
 function logBody(requestParams, response, context, ee, next) {
-  if (process.env.DEBUG === 'true') {
+  if (response.body.error) {
     console.log(response.body);
-  } else if (response.body.error) {
-    console.log(response.body);
+  } else if (process.env.DEBUG === 'true') {
+    console.log(`Result: ${response.body.result}`);
   }
   return next();
+}
+
+function logBodyForReceipt(requestParams, response, context, ee, next) {
+
+  if (response.body.error || response.body.result === null) {
+    console.log(response.body);
+  } else if (process.env.DEBUG === 'true') {
+    console.log(`Blocknumber: ${response.body.result.blockNumber}, Blockhash: ${response.body.result.blockHash}`);
+  }
+  return next();
+}
+
+function waitForTx(requestParams, context, ee, next) {
+  provider.waitForTransaction(context.vars.txHash)
+    .then(() => {
+      return next();
+    })
+    .catch(err => {
+      console.error(err);
+      return next();
+    })
 }
 
 module.exports = {
@@ -105,4 +126,6 @@ module.exports = {
   createContractRawTx,
   logBody,
   getNonce,
+  waitForTx,
+  logBodyForReceipt,
 };
